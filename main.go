@@ -16,23 +16,23 @@ func init() {
 }
 
 // 获取指定网卡的ipv4地址,如WLAN
-func GetIPv4ByInterfaceName(name string) (string, error) {
+func GetIPv4ByInterfaceName(name string) (net.IP, error) {
 	inter, err := net.InterfaceByName(name)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 	addrs, err := inter.Addrs()
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 	for _, addr := range addrs {
 		if ip, ok := addr.(*net.IPNet); ok && !ip.IP.IsLoopback() {
 			if ip.IP.To4() != nil {
-				return ip.IP.String(), nil
+				return ip.IP, nil
 			}
 		}
 	}
-	return "", errors.New(name + " interface not found")
+	return nil, errors.New(name + " interface not found")
 }
 
 // 获取指定网卡的ipv4子网掩码
@@ -55,7 +55,7 @@ func GetIpv4MaskByInterfaceName(name string) (net.IPMask, error) {
 	return nil, errors.New(name + " interface not found")
 }
 
-var IFName = flag.String("if", "eth0", "interface name")
+var IFName = flag.String("name", "eth0", "interface name")
 
 var help = flag.Bool("h", false, "help")
 
@@ -78,8 +78,7 @@ func main() {
 		os.Exit(1)
 	}
 	// 通过ipv4地址和子网掩码计算出ipv4网段
-	ipAddr := net.ParseIP(ip)
-	network := ipAddr.Mask(mask)
+	network := ip.Mask(mask)
 	// 172.18.96.0 -> 172.18.96.1
 	network[3] = network[3] + 1
 
