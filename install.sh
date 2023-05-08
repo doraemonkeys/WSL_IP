@@ -12,6 +12,8 @@ unrar x wslip-x64.rar
 # 将可执行文件移动到目标目录
 mv wslip "$HOME/.local/bin/"
 
+chmod +x "$HOME/.local/bin/wslip"
+
 # 删除多余文件
 rm wslip-x64.rar
 
