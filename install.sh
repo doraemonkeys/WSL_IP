@@ -31,7 +31,7 @@ read -r port
 
 str1="
 function proxy_on() {
-export http_proxy=\"http://$(wslip):"
+export http_proxy=\"http://\$(wslip):"
 
 str2="\"
 export https_proxy=\$http_proxy
