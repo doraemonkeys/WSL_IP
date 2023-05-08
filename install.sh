@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # 下载wslip-x64.rar
-wget https://github.com/Doraemonkeys/WSL_IP/releases/tag/v0.0.1/wslip-x64.rar
+wget https://github.com/Doraemonkeys/WSL_IP/releases/download/v0.0.1/wslip-x64.rar
 
 chmod +x wslip-x64.rar
 
@@ -11,6 +11,9 @@ unrar x wslip-x64.rar
 
 # 将可执行文件移动到目标目录
 mv wslip "$HOME/.local/bin/"
+
+# 删除多余文件
+rm wslip-x64.rar
 
 # bashrc_file="$HOME/.bashrc"
 readonly profile_file="$HOME/.bash_profile"
