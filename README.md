@@ -8,15 +8,15 @@ bash <(curl -s https://raw.githubusercontent.com/Doraemonkeys/WSL_IP/master/inst
 
 2. 按提示输入代理端口号(clash默认7890,v2ray默认10809)
 
-![image-20230509013613785](E:/Doraemon/Pictures/Typora/2023002/image-20230509013613785.png)
+![image-20230509013613785](https://raw.githubusercontent.com/Doraemonkeys/picture/master/1/202305090157818.png)
 
 3. 暂时关闭windows网络防火墙(只关闭**公用网络**就行)
 
-<img src="E:/Doraemon/Pictures/Typora/2023002/image-20230509014017161.png" alt="image-20230509014017161" style="zoom: 50%;" />
+<img src="https://raw.githubusercontent.com/Doraemonkeys/picture/master/1/202305090157905.png" alt="image-20230509014017161" style="zoom: 50%;" />
 
 4. 开启代理软件的**允许来自局域网的连接**选项
 
-![image-20230509014522847](E:/Doraemon/Pictures/Typora/2023002/image-20230509014522847.png)
+![image-20230509014522847](https://raw.githubusercontent.com/Doraemonkeys/picture/master/1/202305090157994.png)
 
 4. 重启终端/WSL2
 
@@ -38,17 +38,17 @@ bash <(curl -s https://raw.githubusercontent.com/Doraemonkeys/WSL_IP/master/inst
 
 我们可以通过资源监视器->网络，去确定对应端口的进程名 xray.exe
 
-![img](E:/Doraemon/Pictures/Typora/2023002/v2-0bae1731994d773cbef8ebed7105c9c8_720w.png)
+![img](https://raw.githubusercontent.com/Doraemonkeys/picture/master/1/202305090157077.png)
 
 然后，在任务管理器中右键单击 xray.exe，选择属性，获取其文件路径
 
-![img](E:/Doraemon/Pictures/Typora/2023002/v2-73e91d5af651f0ce9ec156ddab752100_720w.png)
+![img](https://raw.githubusercontent.com/Doraemonkeys/picture/master/1/202305090157152.png)
 
 2. 添加防火墙规则
 
 通过允许其他应用按钮，添加 xray.exe 到允许列表
 
-![img](E:/Doraemon/Pictures/Typora/2023002/v2-61386e3ac28495e31432aabd010aed56_720w.png)
+![img](https://raw.githubusercontent.com/Doraemonkeys/picture/master/1/202305090157223.png)
 
 
 
