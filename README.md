@@ -1,4 +1,4 @@
-## 为WSL2配置Windows代理
+## 为WSL2配置Windows代理(可解决WSL2动态ip问题)
 
 1. 执行脚本(bash)，可能需要管理员权限
 
