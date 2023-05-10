@@ -88,7 +88,38 @@ else
 fi
 
 # 将/etc/resolv.conf中nameserver一行修改为'nameserver 114.114.114.114'
-# 无权限，暂无解决方案
+targetFile="/etc/resolv.conf"
+
+if [ ! -f "$targetFile" ]; then
+    echo "$targetFile 文件不存在, 创建文件"
+    sudo touch "$targetFile"
+fi
+
+newNameserver="nameserver 114.114.114.114"
+
+# 获取第一行nameserver
+nameserver=$(grep "nameserver" $targetFile | head -n 1)
+
+# 判空
+if [ -z "$nameserver" ]; then
+    echo "nameserver为空"
+    # 设置可修改
+    sudo chattr -i $targetFile
+    # 添加nameserver
+    echo "$newNameserver" | sudo tee -a "$targetFile"
+    # 设置不可修改
+    sudo chattr +i $targetFile
+elif [ "$nameserver" != "$newNameserver" ]; then
+    echo "nameserver不相等：$nameserver"
+    # 不相等
+    # 设置可修改
+    sudo chattr -i $targetFile
+    # 替换第一个nameserver
+    sudo sed -i "0,/nameserver/s/nameserver.*/$newNameserver/g" $targetFile
+    # 设置不可修改
+    sudo chattr +i $targetFile
+fi
+
 # echo "nameserver 114.114.114.114" | sudo tee -a /etc/resolv.conf
 
 # 重新加载bash配置文件
