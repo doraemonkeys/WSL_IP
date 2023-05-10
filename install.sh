@@ -102,7 +102,6 @@ nameserver=$(grep "nameserver" $targetFile | head -n 1)
 
 # 判空
 if [ -z "$nameserver" ]; then
-    echo "nameserver为空"
     # 设置可修改
     sudo chattr -i $targetFile
     # 添加nameserver
@@ -110,7 +109,6 @@ if [ -z "$nameserver" ]; then
     # 设置不可修改
     sudo chattr +i $targetFile
 elif [ "$nameserver" != "$newNameserver" ]; then
-    echo "nameserver不相等：$nameserver"
     # 不相等
     # 设置可修改
     sudo chattr -i $targetFile
