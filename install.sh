@@ -1,21 +1,21 @@
 #!/bin/bash
 
-# 下载wslip-x64.rar
-wget https://github.com/Doraemonkeys/WSL_IP/releases/download/v0.0.1/wslip-x64.rar
+# # 下载wslip-x64.rar
+# wget https://github.com/Doraemonkeys/WSL_IP/releases/download/v0.0.1/wslip-x64.rar
 
-chmod +x wslip-x64.rar
+# chmod +x wslip-x64.rar
 
-# 解压rar文件
-sudo apt-get install unrar
-unrar x wslip-x64.rar
+# # 解压rar文件
+# sudo apt-get install unrar
+# unrar x wslip-x64.rar
 
-# 将可执行文件移动到目标目录
-mv wslip "$HOME/.local/bin/"
+# # 将可执行文件移动到目标目录
+# mv wslip "$HOME/.local/bin/"
 
-chmod +x "$HOME/.local/bin/wslip"
+# chmod +x "$HOME/.local/bin/wslip"
 
-# 删除多余文件
-rm wslip-x64.rar
+# # 删除多余文件
+# rm wslip-x64.rar
 
 # bashrc_file="$HOME/.bashrc"
 readonly profile_file="$HOME/.bash_profile"
@@ -29,15 +29,18 @@ read -r port
 
 # append the proxy functions to .bash_profile file
 
+WSL_PROXY_START="#-------------------WSL_PROXY_START-------------------"
+WSL_PROXY_END="#-------------------WSL_PROXY_END-------------------"
+
 str1="
 function proxy_on() {
-export http_proxy=\"http://\$(wslip):"
+export http_proxy=\"http://\$(ip route | grep default | awk '{print \$3}'):"
 
 str2="\"
 export https_proxy=\$http_proxy
 export HTTP_PROXY=\$http_proxy
 export HTTPS_PROXY=\$http_proxy
-echo -e \"终端代理已开启，windows ip 为 \$(wslip)。\"
+echo -e \"终端代理已开启，windows ip 为 \$(ip route | grep default | awk '{print \$3}')。\"
 if curl --silent --head --max-time 3 https://www.google.com/ | grep \"HTTP.*200\" > /dev/null; then
         echo \"Google 连通性正常。\"
 else
@@ -58,7 +61,35 @@ if [ -f ~/.bashrc ]; then
 fi
 "
 
-echo "$str1$port$str2" >>"$profile_file"
+# 判断是否存在 WSL_PROXY_START
+if grep -q "$WSL_PROXY_START" "$profile_file"; then
+    # 存在(删除start到end之间的内容)
+    sed -i "/$WSL_PROXY_START/,/$WSL_PROXY_END/d" "$profile_file"
+fi
+
+echo "" >>"$profile_file"
+echo "$WSL_PROXY_START$str1$port$str2$WSL_PROXY_END" >>"$profile_file"
+
+# 将/etc/wsl.conf文件中的
+# [network]
+# generateResolvConf = true
+# 修改为
+# [network]
+# generateResolvConf = false
+
+# 判断是否存在 generateResolvConf
+if grep -q "generateResolvConf" /etc/wsl.conf; then
+    # 存在
+    sudo sed -i 's/generateResolvConf = true/generateResolvConf = false/g' /etc/wsl.conf
+else
+    # 不存在
+    echo "[network]" | sudo tee -a /etc/wsl.conf
+    echo "generateResolvConf = false" | sudo tee -a /etc/wsl.conf
+fi
+
+# 将/etc/resolv.conf中nameserver一行修改为'nameserver 114.114.114.114'
+# 无权限，暂无解决方案
+# echo "nameserver 114.114.114.114" | sudo tee -a /etc/resolv.conf
 
 # 重新加载bash配置文件
 # shellcheck source=/dev/null
